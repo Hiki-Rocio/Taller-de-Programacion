@@ -1,0 +1,143 @@
+{Una empresa desea procesar la informacion de las horas trabajadas por sus empleados durante el 2021.
+* Para ello, la empresa posee registros leidos de las horas trabajadas por cada empleado.
+* Cada registro consta del numero de empleado,dia , mes y la cantidad de horas trabajadas(a lo sumo 8)para dicho dia y mes .
+* 
+* a)Realizar un modulo que lea la informacion de los empleados y retorne 
+* una estructura de datos con todos los registros leidos.La lectura debe ser eficiente
+* para la busqueda por numero de empleado.La lectura finaliza al ingresar 
+* un registro con dia 0.Se sugiere utilizar el modulo leerRegistro()
+* 
+* b)Realizar un modulo que reciba la estructura generada en a) y dos numeros 
+* de empleados X e Y, y retorne todos los registros de horas trabajadas por 
+* empleados cuyos numeros estene entre X e Y(INCUIDOS).
+* 
+* 
+* c)Realice un modulo que reciba la estructura generada en el inciso b), y retorne
+* la cantidad de horAS que trabaja el epleado con menor codigo de toda la empresa.}
+
+
+program turnoCtema2;
+const
+   dimF=8;
+type
+   rango1=0..31;
+   rango2=1..12;
+   rango3=1..dimF;
+   empleado=record
+     num:integer;
+     dia:rango1;
+     mes:rango2;
+     cantHoras:rango3;
+   end;
+   
+   arbol=^nodo;
+   nodo=record
+     dato:empleado;
+     HI:arbol;
+     HD:arbol;
+   end;
+   
+   procedure generarArbol(var a:arbol);
+       procedure LeerEmpleado(var e:empleado);
+       begin
+           write('Dia: ');
+           readln(e.dia);
+           if(e.dia<>0)then begin
+               write('Numero de empleado: ');
+               e.num:=Random(100)+1;
+               writeln(e.num);
+               write('Mes: ');
+               e.mes:=Random(12)+1;
+               writeln('e.mes');
+               write('Cantidad de horas por dia: ');
+               e.cantHoras:=Random(8)+1;
+               writeln(e.cantHoras);
+               writeln('');
+                writeln;
+          end;
+       end;
+       
+       procedure InsertarOrdenado(var a:arbol; e:empleado);
+       begin
+         if(a=nil)then begin
+           new(a);
+           a^.dato:=e;
+           a^.HI:=nil;
+           a^.HD:=nil;
+         end
+         else
+              if(a^.dato.num>e.num)then  
+                InsertarOrdenado(a^.HI,e)
+              else
+                InsertarOrdenado(a^.HD,e);        
+       end;
+   var
+    e:empleado;
+   begin
+      LeerEmpleado(e);
+      while(e.dia<>0)do begin
+            InsertarOrdenado(a,e);
+            LeerEmpleado(e);
+      end;
+   end;
+   
+   procedure ImprimirArbol(a:arbol);
+      procedure ImprimirEmpleado(a:arbol);
+      begin
+          if(a<>nil)then begin
+            writeln('');
+            ImprimirEmpleado(a^.HI);
+            writeln('Numero de empleado: ',a^.dato.num);
+            writeln('Dia: ',a^.dato.dia);
+            writeln('Mes: ',a^.dato.mes);
+            writeln('Cantidad de horas: ',a^.dato.cantHoras);
+            ImprimirEmpleado(a^.HD);
+            writeln('');
+            writeln;
+          end;    
+      end;
+   begin
+      if(a=nil)then
+        writeln('No hay elementos')
+        else
+          ImprimirEmpleado(a);
+   end;
+   
+   {b)Realizar un modulo que reciba la estructura generada en a) y dos numeros 
+* de empleados X e Y, y retorne todos los registros de horas trabajadas por 
+* empleados cuyos numeros esten entre X e Y(INCUIDOS)}
+procedure ImprimirArbol2(a:arbol);
+  procedure ImprimirEntreValores(a:arbol; X,Y:integer);
+  begin
+        if(a<>nil)then begin
+           ImprimirEntreValores(a^.HI,X,Y);
+           if(a^.dato.num<=Y)and(a^.dato.num>=X)then begin
+            writeln('Numero de empleado: ',a^.dato.num);
+            writeln('Dia: ',a^.dato.dia);
+            writeln('Mes: ',a^.dato.mes);
+            writeln('Cantidad de horas: ',a^.dato.cantHoras);             
+           end;
+           ImprimirEntreValores(a^.HD,X,Y);
+        end;
+   end;
+  var
+    X,Y:integer;
+  begin
+     writeln('Ingrese el valor X: ');
+     readln(X);
+     writeln('Ingrese el valor Y: ');
+     readln(Y);
+    ImprimirEntreValores(a,X,Y);
+  end;
+
+var
+   a:arbol;
+begin
+  Randomize;
+  a:=nil;
+  generarArbol(a);
+  writeln('--------------------------ARBOL----------------------------');
+  ImprimirArbol(a);
+  writeln('----------------------Cantidad de horas de empleados entre X e Y-----------------------');
+ImprimirArbol2(a);
+end.

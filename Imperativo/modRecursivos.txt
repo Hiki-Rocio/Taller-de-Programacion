@@ -1,0 +1,498 @@
+modulos recursivos
+
+
+------------------------
+PASAJE BINARIO
+
+procedure pasaje_binario(num:integer);
+begin
+if(num <> 0) then
+begin
+pasaje_binario(num div 2);
+write( num mod 2, '|');
+end;
+end;
+-------------------------
+LEER
+
+procedure leer_numero(var num: integer);
+begin
+writeln('ingrese un numero');
+read (num);
+if (num <> 0) then
+begin
+pasaje_binario(num);
+writeln;
+leer_numero(num);
+end;
+end;
+
+----------------------
+CARGAR VECTOR RECURSIVO
+
+procedure CargarVector (var v: vector; var dimL: integer);
+
+  procedure CargarVectorRecursivo (var v: vector; var dimL: integer);
+  var caracter: char;
+  begin
+    write ('Ingrese un caracter: ');
+    readln(caracter);  
+    if (caracter <> '.' ) and (dimL < dimF) 
+    then begin
+          dimL:= dimL + 1;
+          v[dimL]:= caracter;
+          CargarVectorRecursivo (v, dimL);
+         end;
+  end;
+  
+begin
+  dimL:= 0;
+  CargarVectorRecursivo (v, dimL);
+end;
+
+-----------------------------
+IMPRIMIR VECTOR  ACA QUEDA EL VECTOR UNO ABAJO DEL OTRO
+
+procedure imprimirVectorRecursivo (v: vector; dimL: integer; i:integer);
+begin
+     if(i<=dimL)then
+     begin
+         write ('----');
+         writeln;
+         write (' ');
+         write(v[i], ' | ');
+         writeln;
+         write ('----');
+         writeln;
+         writeln;
+         imprimirVectorRecursivo(v,dimL,i+1);
+     end;
+End;  
+procedure invocarImprimirRecursivo (v: vector; dimL: integer);
+var i:integer;
+begin
+   i:=1;
+   imprimirVectorRecursivo(v,dimL,i);
+end;
+
+----------------
+O SI LA DIML :=1 ESTA DECLARADO EN EL PP ACA QUEDA EL VECTR ALINEADO 
+
+procedure imprimirVectorRecursivo (v: vector; diml: integer);
+begin
+     if(diml<=dimf)then
+     begin
+         write(v[diml], ' | ');
+         imprimirVectorRecursivo(v,diml+1);
+     end;
+End;  
+procedure imprimirVector (v: vector; diml: integer);
+begin
+   imprimirVectorRecursivo(v,diml);
+end;
+
+--------------------------------
+
+GENERAR VECTOR RANDOM CON DIMF ENTRE CIERTOS NUMEROS
+
+//a. Implemente un módulo recursivo que genere un vector de 20 números enteros “random” mayores a 0 y menores a 100.
+procedure generar_vector(var v: vector; diml: integer);
+var
+	 num: integer;
+begin
+	 num := random(100);
+	 if (num<>0) and (diml <dimf) and then begin
+			 diml := diml + 1;
+			 v[diml] := num;
+			 generar_vector(v,diml);
+	 end;
+end;
+--------------------------------
+CONTAR CARACTERES
+
+function ContarCaracteres(): integer;
+var caracter: char;
+Begin
+  write ('Ingrese un caracter: ');
+  readln(caracter);  
+  if (caracter <> '.' )  
+  then ContarCaracteres:= ContarCaracteres() + 1  
+  else ContarCaracteres:=0  
+End;
+
+-------------------------------
+
+CARGAR LISTA RECURSIVA
+procedure CargarLista (var l: lista);
+var caracter: char;
+    nuevo: lista;
+Begin
+  write ('Ingrese un caracter: ');
+  readln(caracter);  
+  if (caracter <> '.' )  
+  then begin
+         CargarLista (l);
+         new (nuevo);
+         nuevo^.dato:= caracter;
+         nuevo^.sig:= l;
+         l:= nuevo;
+       end
+  else l:= nil
+End;
+--------------------------------
+
+CARGAR LISTA RANDOM tratar de que el randomize quede afuera
+
+procedure CargarLista (var l: lista);
+var 
+    nuevo: lista;
+    num:integer;
+Begin
+    Randomize; 
+    num := random (10);
+    writeln ('El numero aleatorio generado es: ', num);
+    readln;
+  if (num <> 0)  
+  then begin
+         CargarLista (l);
+         new (nuevo);
+         nuevo^.dato:= num;
+         nuevo^.sig:= l;
+         l:= nuevo;
+       end
+  else
+        l:= nil
+End;
+-------------------------------------------
+
+IMPRIMIR LISTA
+
+procedure ImprimirListaMismoOrden (l: lista);
+begin
+  if (l<> nil) then begin
+                      write (' ', l^.dato);
+                      ImprimirListaMismoOrden (l^.sig);
+                    end;
+end;
+procedure ImprimirListaOrdenInverso (l: lista);
+begin
+  if (l<> nil) then begin
+                      ImprimirListaMismoOrden (l^.sig);
+                      write (' ', l^.dato);
+                    end;
+end;
+-------------------------
+
+MINIMO EN UNA LISTA
+
+procedure minimo(num:integer; var minnum:integer);
+begin
+  if(num<minnum)then begin
+     minnum:=num; 
+   end;
+end;
+
+procedure ProcesarMinimo(l:lista; var minnum:integer);
+begin
+    if(l<>nil)then begin
+       minimo(l^.dato,minnum);
+       ProcesarMinimo(l^.sig,minnum);      
+    end;    
+end;
+--------------------------
+MAXIMO EN UNA LISTA
+
+procedure maximo(num:integer; var max:integer);
+begin
+  if(num>max)then begin
+     max:=num; 
+   end;
+end;
+
+procedure ProcesarMax(l:lista; var max:integer);
+begin
+    if(l<>nil)then begin
+       maximo(l^.dato,max);
+       ProcesarMax(l^.sig,max);      
+    end
+    else
+       ProcesarMax:=max;   
+end;
+-------------------------
+
+BUSCAR EN UNA LISTA
+
+function Buscar(l:lista; num:integer):boolean;
+begin
+   if (l<>nil)and (num<>l^.dato)then
+        Buscar:=Buscar(l^.sig, num);
+end;
+        
+PP
+ // insiso D
+   write('Ingrese el numero que quiere buscar: ');
+   readln(num);
+    ok:= Buscar(l,num);
+    if (ok=true) then
+          writeln('Se ha encontrado el numero')
+        else
+            writeln('No se ha encontrado el numero')
+-------------------
+
+SUMA con diml:=1
+
+procedure suma (v:vector;  dim: integer; var su:integer);
+begin
+	 if (dim <= dimf ) then begin
+		 su := su + v[dim];
+         suma(v, dim + 1, su);   
+    end;
+end;
+------------------
+
+MAXIMO EN VECTOR puede ser un procedimiento
+
+function maximo(v:vector;i,max:integer):integer;
+begin
+if( i <= dimf )then  begin
+  if(v[i] > max) then 
+     max:=v[i]; 
+  maximo:=maximo(v,i+1,max); 
+ end
+ else
+    maximo:=max;
+end;
+--------------------------------------------
+BUSQUEDA DICOTOMICA
+
+procedure dicotomica(v:vector; ini,fin:subrango; var pos:subrango;	valor:integer);
+
+var
+	medio:subrango;
+
+begin
+	medio:=(ini+fin) div 2; divido en 2 el vector
+	if(ini <= fin) and (valor <> v[medio].code) then begin si no supera el vector y el valor buscado es distinto a cualquier valor
+	  if(valor<v[medio].code)then 
+	    fin:= medio-1
+	  else
+	    ini:= medio+1;
+	dicotomica(v,ini,fin,pos,valor);
+	end;
+	if(ini <= fin) and (valor = v[medio].code) then
+		pos:=medio;
+end;
+
+  pos:=-1;
+  Write ('ingrese el valor a buscar '); readln (dato);
+  busquedaDicotomica(v,1,dimL,dato,pos);
+
+  if (pos <> -1) then    
+      Writeln ('El DNI', dato,' se encuentra en la posicion: ', pos)
+  else
+      writeln ('no se encontro el DNI ', dato, ' en el vector');
+
+  readln();
+
+opcion2-----------------
+	procedure busqueda(v:vector;dml:integer);
+		procedure busquedabinaria(v:vector;ini,fin,dato:integer);
+			var medio:integer;
+			begin
+				medio:=(ini+fin) div 2;
+				if (dato <>v[medio].cod) then begin
+				  if (ini <=fin)then begin
+						if (dato <v[medio].cod)then
+							busquedabinaria(v,ini,medio-1,dato)
+							else
+								busquedabinaria(v,medio+1,fin,dato)
+				  end
+				  else 
+					writeln(' el código buscado no existe.')
+				end
+				else 
+				 writeln(' DNI del propietario ',v[medio].dni);	
+		end;
+		var
+			ini,dato:integer;
+		begin
+			ini:=1;
+			writeln(' codigo a buscar:');readln(dato);	
+			busquedabinaria(v,ini,dml,dato);
+	End;
+-------------------------------------------------------------------
+
+ARBOLES
+
+procedure GenerarArbol (var a: arbol);
+  Procedure LeerSocio (var s: socio);
+  (....)
+  end, 
+
+  Procedure InsertarElemento (var a: arbol; elem: socio);
+  Begin
+    if (a = nil) 
+    then begin
+           new(a);
+           a^.dato:= elem; 
+           a^.HI:= nil; 
+           a^.HD:= nil;
+         end
+    else if (elem.numero < a^.dato.numero) 
+         then InsertarElemento(a^.HI, elem)
+         else InsertarElemento(a^.HD, elem); 
+  End;
+
+var unSocio: socio;  
+Begin
+ a:= nil;
+ LeerSocio (unSocio);
+ while (unSocio.numero <> 0)do
+  begin
+   InsertarElemento (a, unSocio);
+   writeln;
+   LeerSocio (unSocio);
+  end;
+end;
+.................................
+   
+   procedure ImprimirArbol(a:arbol);
+      procedure ImprimirEmpleado(a:arbol);
+      begin
+          if(a<>nil)then begin
+            writeln('');
+            ImprimirEmpleado(a^.HI);
+            writeln('Numero de empleado: ',a^.dato.num);
+            writeln('Dia: ',a^.dato.dia);
+            writeln('Mes: ',a^.dato.mes);
+            writeln('Cantidad de horas: ',a^.dato.cantHoras);
+            ImprimirEmpleado(a^.HD);
+            writeln('');
+            writeln;
+          end;    
+      end;
+   begin
+      if(a=nil)then
+        writeln('No hay elementos')
+        else
+          ImprimirEmpleado(a);
+   end;
+   
+--------------------------------
+
+IMPIMIR NUMEROS INFERIORES AL NUMERO DEL CUAL ESTA ORDENADO CON UNO PASADO POR 
+PARAMETRO
+
+ procedure ImprimirInferior(ar:arbol;valor:integer);
+ begin
+   if(ar<>nil)then begin
+     ImprimirInferior(ar^.HI,valor);
+     if(ar^.dato.legajo<valor)then begin
+        writeln('Dni: ',ar^.dato.dni);
+        writeln('Anio de ingreso: ',ar^.dato.anio);
+        writeln;;
+     end;
+    ImprimirInferior(ar^.HD,valor)
+   end;
+ end;
+
+------------------------------
+ENTRE DOS VALORES
+
+  procedure ImprimirEntreValores (ar:arbol;valor1,valor2:integer);
+  begin
+    if(ar<>nil)then begin
+      ImprimirEntreValores(ar^.HI, valor1,valor2);
+      if(ar^.dato.legajo<valor2)and(ar^.dato.legajo>valor1)then begin
+         writeln('Dni: ',ar^.dato.dni);
+         writeln('Anio de ingreso: ',ar^.dato.anio);
+      end;
+     ImprimirEntreValores(ar^.HD, valor1,valor2);
+    end;
+  end;
+
+--------------------
+IMPRIMIR el Dni mas grande (el arbol esta ordenado por cod)
+
+  procedure dniMasGrande(ar:arbol);
+   procedure maximo(ar:arbol; var max:integer);
+   begin
+     if(ar<>nil)then begin
+          if(ar^.dato.dni>max)then
+                max:=ar^.dato.dni;
+      maximo(ar^.HI,max);
+      maximo(ar^.HD,max);
+    end;
+   end;
+  var
+    max:integer;
+  begin
+    max:=0;
+    maximo(ar,max);
+    writeln('DNI: ',max);
+  end;
+
+----------------------
+IMPRIMIR IMPAR
+
+ procedure legajoImpar(a:arbol; var cant:integer);
+   function impar(legajo:integer):boolean;
+   begin
+        impar:=(legajo mod 2)=1;
+   end;
+
+ begin
+     if(a<>nil)then begin
+        if(impar(a^.dato.legajo))then 
+             cant:=cant+1;
+        legajoImpar(a^.HI,cant);
+        legajoImpar(a^.HD,cant);
+     end; 
+ end;
+-----------------------
+encontrar si existe o no
+
+procedure InformarExistenciaNumeroSocio (a: arbol);
+{ Lea un valor entero e informe si existe o no existe un socio con ese valor. 
+* Debe invocar a un modulo recursivo que reciba el valor lei­do y retorne verdadero o falso. }
+       
+  function Buscar (a: arbol; num: integer): boolean;
+  begin
+    if (a = nil) 
+    then Buscar:= false
+    else If (a^.dato.numero = num) 
+         then Buscar:= true
+         else if (num < a^.dato.numero)
+              then Buscar:= Buscar (a^.HI, num)
+              else Buscar:= Buscar (a^.HD, num)
+  end;
+  
+var numABuscar: integer;
+begin
+  writeln;
+  writeln ('----- Informar Existencia Numero Socio ----->');
+  writeln;
+  write ('Ingrese numero de socio a buscar: ');
+  Readln (numABuscar);
+  writeln;
+  if (Buscar (a, numABuscar)) 
+  then writeln ('El numero ', numABuscar, ' existe')
+  else writeln ('El numero ', numABuscar, ' no existe');
+  writeln;
+end;
+  
+---------------------------------------------
+
+buscar una marca y imprimir sus datos
+
+	function busqueda(a: TArbol; m: TString): integer;
+	begin
+		if(a = nil) then 
+			busqueda:= 0
+		else begin
+			if(a^.dato.marca = m) then
+				busqueda:= 1 + busqueda(a^.HI, m) + busqueda(a^.HD, m)
+			else
+				busqueda:= busqueda(a^.HI, m) + busqueda(a^.HD, m);
+		end;
+	end;

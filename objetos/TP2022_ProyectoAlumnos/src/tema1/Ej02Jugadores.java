@@ -25,7 +25,7 @@ public class Ej02Jugadores {
 
         //Paso 4: Declarar indice y variables auxiliares a usar
         int i, cant;
-        double altura, suma, promedio;
+        double altura, suma, promedio;//para que el promedio me de double tengo que fijarme que al menos una variable sea double
         suma=0;
         cant=0;
         //Paso 6: Ingresar 15 numeros (altura), cargarlos en el vector, ir calculando la suma de alturas

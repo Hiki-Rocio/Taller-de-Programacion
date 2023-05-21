@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tema4;
 
 
@@ -14,11 +10,12 @@ public abstract class Figura {
         setColorRelleno(unCR);
         setColorLinea(unCL);
     }
-    
+    @Override
     public String toString(){
-        String aux = "Area: " + this.calcularArea() +
-                     " CR: "  + getColorRelleno() + 
-                      " CL: " + getColorLinea();             
+        String aux = "\nPerimetro: " + this.calcularPerimetro() +
+                     "\nArea: " + this.calcularArea() +
+                     "\nCR: "  + getColorRelleno() + 
+                      "\nCL: " + getColorLinea();             
              return aux;
        }
 
@@ -35,8 +32,10 @@ public abstract class Figura {
     public void setColorLinea(String unColor){
         colorLinea = unColor;       
     }
-    
+    public void  despintar(){
+           setColorLinea("Negra");
+           setColorRelleno("Blanco");
+    }
     public abstract double calcularArea();
     public abstract double calcularPerimetro();
-     
 }

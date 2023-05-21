@@ -77,5 +77,13 @@ public class Partido {
          return ganador;
                  
     }	    
+   /* - Para cada partido, armar e informar una representación String del estilo:
+{EQUIPO-LOCAL golesLocal VS EQUIPO-VISITANTE golesVisitante }*/
+    public String toString(){
+      String aux;
+      aux = "EQUIPO-LOCAL: "+getLocal()+" "+ "Goles: "+ golesLocal+" VS EQUIPO-VISITANTE: "+getVisitante()+" "+  "Goles: "+golesVisitante;
+      return aux;
+    }
+    
     
 }
